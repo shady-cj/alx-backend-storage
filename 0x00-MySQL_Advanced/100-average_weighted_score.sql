@@ -9,7 +9,7 @@ BEGIN
 
 DECLARE average FLOAT;
 
-SELECT SUM(score * (SELECT weight FROM projects WHERE projects.id = project_id)) / SUM(1 * (SELECT weight FROM projects WHERE projects.id = project_id)) INTO average FROM corrections WHERE corrections.user_id = 2;
+SELECT SUM(score * (SELECT weight FROM projects WHERE projects.id = project_id)) / SUM(1 * (SELECT weight FROM projects WHERE projects.id = project_id)) INTO average FROM corrections WHERE corrections.user_id = user_id;
 UPDATE users SET average_score = average WHERE users.id = user_id;
 
 END $$
