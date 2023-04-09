@@ -2,4 +2,4 @@
 -- no last_meeting or more than 1 month.
 
 
-CREATE VIEW need_meeting AS SELECT name FROM students WHERE score < 80 AND (last_meeting IS NULL OR MONTH(CURDATE()) - MONTH(last_meeting) > 1);
+CREATE VIEW need_meeting AS SELECT name FROM students WHERE score < 80 AND (last_meeting IS NULL OR DATEDIFF(CURDATE(), ADDDATE(CURDATE(), INTERVAL -1 MONTH)) > 31);
