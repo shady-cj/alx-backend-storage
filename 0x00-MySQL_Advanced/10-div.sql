@@ -3,16 +3,17 @@
 
 DELIMITER $$ ;
 
-CREATE FUNCTION SafeDiv(a INT, b INT)
-RETURNS FLOAT AS
+CREATE FUNCTION SafeDiv (a INT, b INT)
+RETURNS FLOAT
+DETERMINISTIC
 BEGIN
-DECLARE div FLOAT;
+DECLARE float_div FLOAT;
 IF b = 0
 THEN
-SET div = 0;
+SET float_div = 0;
 ELSE
-SET div = a / b;
+SET float_div = a / b;
 END IF;
-RETURN div;
+RETURN float_div;
 END $$
 DELIMITER ; $$
