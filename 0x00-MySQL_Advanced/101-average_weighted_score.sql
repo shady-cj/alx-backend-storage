@@ -9,9 +9,8 @@ BEGIN
 
 DECLARE average FLOAT;
 DECLARE user_id, b INT;
-DECLARE users_cursor CURSOR FOR 
-SELECT id FROM users;
-DECLARE CONTINUE HANDLER FOR NOT FOUNDSET b = 1;
+DECLARE users_cursor CURSOR FOR SELECT id FROM users;
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET b = 1;
 OPEN users_cursor;
 REPEAT
 FETCH users_cursor INTO user_id;
@@ -19,7 +18,7 @@ SELECT SUM(score * (SELECT weight FROM projects WHERE projects.id = project_id))
 UPDATE users SET average_score = average WHERE users.id = user_id;
 UNTIL b = 1
 END REPEAT;
-CLOSE users_cursor
+CLOSE users_cursor;
 END $$
 
 DELIMITER ; $$
