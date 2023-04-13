@@ -191,5 +191,34 @@ bye
 guillaume@ubuntu:~/0x01$ 
 ```
 
-
 **File**: `6-update`
+
+
+
+### 7. Delete by match
+
+
+Write a script that deletes all documents with `name="Holberton school"` in the collection `school`:
+
+The database name will be passed as option of `mongo` command
+
+
+```
+guillaume@ubuntu:~/0x01$ cat 7-delete | mongo my_db
+MongoDB shell version v3.6.3
+connecting to: mongodb://127.0.0.1:27017/my_db
+MongoDB server version: 3.6.3
+{ "acknowledged" : true, "deletedCount" : 1 }
+bye
+guillaume@ubuntu:~/0x01$ 
+guillaume@ubuntu:~/0x01$ cat 4-match | mongo my_db
+MongoDB shell version v3.6.3
+connecting to: mongodb://127.0.0.1:27017/my_db
+MongoDB server version: 3.6.3
+bye
+guillaume@ubuntu:~/0x01$ 
+
+
+```
+
+**File**: `7-delete`
