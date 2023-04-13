@@ -1,0 +1,2 @@
+// A mongosh script to use a database named my_db
+use my_db;
