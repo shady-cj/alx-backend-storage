@@ -13,7 +13,11 @@ def main():
     nginx = client.logs.nginx
     x_logs = nginx.count_documents({})
     aggregate_logs = nginx.aggregate([
-        {"$group": {"_id": "$method", "num_of_occurence": {"$sum": 1}}}])
+        {"$group": {"_id": "$method", "num_of_occurence": {"$sum": 1}}}
+    ])
+    aggregate_ips = nginx.aggregate([
+        {"$group": {"_id": "$ip", "num_of_occurence": {"$sum": 1}}},
+        {"$sort": {"num_of_occurence": -1}}, {"$limit": 10}])
     methods = {}
     for m in ["GET", "POST", "PUT", "PATCH", "DELETE"]:
         for m_log in aggregate_logs:
@@ -30,6 +34,9 @@ def main():
         print(f"\tmethod {meth}: {methods.get(meth)}")
     stat_check = nginx.count_documents({"method": "GET", "path": "/status"})
     print(f"{stat_check} status check")
+    print("IPs:")
+    for ip in aggregate_ips:
+        print(f"\t{ip.get('_id')}: {ip.get('num_of_occurence')}")
 
 
 if __name__ == "__main__":
