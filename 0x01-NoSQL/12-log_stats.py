@@ -15,11 +15,12 @@ def main():
     aggregate_logs = nginx.aggregate([
         {"$group": {"_id": "$method", "num_of_occurence": {"$sum": 1}}}])
     methods = {}
-    for m in ["GET", "POST", "PUT", "PATCH", "DELETE"]:
-        for m_log in aggregate_logs:
-            if m == m_log.get('_id'):
-                methods[m] = m_log.get('num_of_occurence')
-                break
+    concerned_methods_set = {"GET", "POST", "PUT", "PATCH", "DELETE"}
+    for m_log in aggregate_logs:
+        met = m_log.get("_id")
+        if met in concerned_methods_set:
+            methods[met] = m_log.get('num_of_occurence')
+    for m in concerned_methods_set:
         if methods.get(m):
             continue
         methods[m] = 0
