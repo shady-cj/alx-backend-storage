@@ -26,7 +26,7 @@ def main():
     print(f"{x_logs} logs")
     print("Methods:")
     for meth in ["GET", "POST", "PUT", "PATCH", "DELETE"]:
-        print(f"\tmethod {meth}: {methods.get(meth)}")
+        print(f"    method {meth}: {methods.get(meth)}")
     stat_check = nginx.count_documents({"method": "GET", "path": "/status"})
     print(f"{stat_check} status check")
 
