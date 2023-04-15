@@ -11,7 +11,7 @@ import typing
 from functools import wraps
 
 
-def count_calls(fn: typing.Callable) -> typing.Callable:
+def count_calls(method: typing.Callable) -> typing.Callable:
     """
     A decorator that takes in a method and increment
     the number of times it's called
@@ -21,12 +21,12 @@ def count_calls(fn: typing.Callable) -> typing.Callable:
         """
         counts and returns the original methods
         """
-        meth = fn.__qualname__
+        meth = method.__qualname__
         if self._redis.get(meth) is None:
             self._redis.set(meth, 1)
         else:
             self._redis.incr(meth)
-        return fn(self, *args)
+        return method(self, *args)
     return count
 
 
