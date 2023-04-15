@@ -27,3 +27,25 @@ class Cache:
         key = str(uuid.uuid4())
         self._redis.set(key, data)
         return key
+
+    def get(self, key: str, fn: typing.Optional[typing.Callable[[],
+            any]]):
+        """
+        get the key and return the correct type
+        """
+        value = self._redis.get(key)
+        if fn is None:
+            return value
+        return fn(value)
+
+    def get_str(self, key: str) -> typing.Union[str, None]:
+        """
+        get the key and return a str
+        """
+        return self.get(key, str)
+
+    def get_int(self, key: str) -> typing.Union[int, None]:
+        """
+        get the key and return an int
+        """
+        return self.get(key, int)
