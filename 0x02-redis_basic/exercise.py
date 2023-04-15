@@ -3,10 +3,31 @@
  The module contains a Cache class. In the __init__ method, store an
  instance of the Redis client as a private variable
  named _redis (using redis.Redis()) and flush the instance using flushdb.
+ basically to implement a caching system
 """
 import redis
 import uuid
 import typing
+from functools import wraps
+
+
+def count_calls(fn: typing.Callable) -> typing.Callable:
+    """
+    A decorator that takes in a method and increment
+    the number of times it's called
+    """
+    @wraps(fn)
+    def count(self, *args):
+        """
+        counts and returns the original methods
+        """
+        meth = fn.__qualname__
+        if self._redis.get(meth) is None:
+            self._redis.set(meth, 1)
+        else:
+            self._redis.incr(meth)
+        return fn(self, *args)
+    return count
 
 
 class Cache:
@@ -20,6 +41,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
+    @count_calls
     def store(self, data: typing.Union[str, bytes, int, float]) -> str:
         """
         set key value for each call to store
@@ -29,7 +51,7 @@ class Cache:
         return key
 
     def get(self, key: str, fn: typing.Optional[typing.Callable[[],
-            any]]):
+            any]] = None):
         """
         get the key and return the correct type
         """
