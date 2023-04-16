@@ -58,9 +58,10 @@ def replay(method: typing.Callable):
     input_lists = r_instance.lrange(f"{meth_name}:inputs", 0, -1)
     output_lists = r_instance.lrange(f"{meth_name}:outputs", 0, -1)
     print(f"{meth_name} was called {length} times")
-    for i in range(length):
-        print(f"{meth_name}(*{input_lists[i].decode('utf-8')})\
- -> {output_lists[i].decode('utf-8')}")
+    zipped_in_out = list(zip(input_lists, output_lists))
+    for in_, out in zipped_in_out:
+        print(f"{meth_name}(*{in_.decode('utf-8')})\
+ -> {out.decode('utf-8')}")
 
 
 class Cache:
@@ -105,3 +106,9 @@ class Cache:
         get the key and return an int
         """
         return self.get(key, int)
+
+cache = Cache()
+cache.store("foo")
+cache.store("bar")
+cache.store(42)
+replay(cache.store)
