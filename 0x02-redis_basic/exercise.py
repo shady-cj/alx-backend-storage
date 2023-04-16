@@ -57,7 +57,7 @@ def replay(method: typing.Callable):
     length = r_instance.llen(f"{meth_name}:inputs")
     input_lists = r_instance.lrange(f"{meth_name}:inputs", 0, -1)
     output_lists = r_instance.lrange(f"{meth_name}:outputs", 0, -1)
-    print(f"{meth_name} was called {length} times")
+    print(f"{meth_name} was called {length} times:")
     zipped_in_out = list(zip(input_lists, output_lists))
     for in_, out in zipped_in_out:
         print(f"{meth_name}(*{in_.decode('utf-8')})\
