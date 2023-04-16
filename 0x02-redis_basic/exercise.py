@@ -48,6 +48,21 @@ def call_history(method: typing.Callable) -> typing.Callable:
     return exec_append
 
 
+def replay(method: typing.Callable):
+    """
+    show the history of the method call
+    """
+    meth_name = method.__qualname__
+    r_instance = redis.Redis()
+    length = r_instance.llen(f"{meth_name}:inputs")
+    input_lists = r_instance.lrange(f"{meth_name}:inputs", 0, -1)
+    output_lists = r_instance.lrange(f"{meth_name}:outputs", 0, -1)
+    print(f"{meth_name} was called {length} times")
+    for i in range(length):
+        print(f"{meth_name}(*{input_lists[i].decode('utf-8')})\
+ -> {output_lists[i].decode('utf-8')}")
+
+
 class Cache:
     """
     Stores a value into the redis store
