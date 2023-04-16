@@ -9,9 +9,6 @@ import typing
 import functools
 
 
-red = redis.Redis()
-red.flushdb()
-
 
 def count_url(fn: typing.Callable) -> typing.Callable:
     """
@@ -20,6 +17,8 @@ def count_url(fn: typing.Callable) -> typing.Callable:
     """
     @functools.wraps(fn)
     def count(url):
+        red = redis.Redis()
+        red.flushdb()
         if red.exists(f"count:{url}"):
             red.incr(f"count:{url}")
         else:
