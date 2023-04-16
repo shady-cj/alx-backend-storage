@@ -30,6 +30,24 @@ def count_calls(method: typing.Callable) -> typing.Callable:
     return count
 
 
+def call_history(method: typing.Callable) -> typing.Callable:
+    """
+    A decorator that stores a methods input and output results
+    """
+    @wraps(method)
+    def exec_append(self, *args):
+        """
+        appends the inputs parameter to the input list
+        """
+        meth_input_name = f"{method.__qualname__}:inputs"
+        meth_output_name = f"{method.__qualname__}:outputs"
+        self._redis.rpush(meth_input_name, str(args))
+        output = method(self, *args)
+        self._redis.rpush(meth_output_name, output)
+        return output
+    return exec_append
+
+
 class Cache:
     """
     Stores a value into the redis store
@@ -42,6 +60,7 @@ class Cache:
         self._redis.flushdb()
 
     @count_calls
+    @call_history
     def store(self, data: typing.Union[str, bytes, int, float]) -> str:
         """
         set key value for each call to store
