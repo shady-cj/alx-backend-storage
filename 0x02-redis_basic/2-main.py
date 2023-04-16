@@ -6,7 +6,6 @@ Cache = __import__('exercise').Cache
 cache = Cache()
 
 cache.store(b"first")
-print(cache.store.__qualname__)
 print(cache.get(cache.store.__qualname__))
 
 cache.store(b"second")

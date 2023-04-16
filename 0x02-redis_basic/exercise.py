@@ -16,7 +16,7 @@ def count_calls(method: typing.Callable) -> typing.Callable:
     A decorator that takes in a method and increment
     the number of times it's called
     """
-    @wraps(fn)
+    @wraps(method)
     def count(self, *args):
         """
         counts and returns the original methods
